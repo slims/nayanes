@@ -90,8 +90,14 @@ if ( !isset($_GET['keywords']) && !isset($_GET['nodeid']) ) {
       </script>
       <?php
     } else {
-      echo '<div class="alert alert-error">'.sprintf(__('Sorry, no result found from <strong>%s</strong>
-        OR maybe XML result and detail disabled.'), $sysconf['node'][$nodeid]['desc']).'</div>';
+      ?>
+      <script type="text/javascript">
+      jQuery(function() {
+        $('#node<?php echo $nodeid; ?>-info .loader').remove();
+        $('#node<?php echo $nodeid; ?>-info').append('<?php echo '<div class="alert alert-error">'.sprintf(__('Sorry, no result found from <strong>%s</strong> OR maybe XML result and detail disabled.'), $sysconf['node'][$nodeid]['desc']).'</div>' ?>');
+      });
+      </script>
+      <?php
     }
 
   }

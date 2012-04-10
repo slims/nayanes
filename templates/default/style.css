@@ -1,0 +1,53 @@
+/*
+ Override bootstrap style
+*/
+
+.navbar-inner {
+  background-image:-moz-linear-gradient(top, #1884d7, #1262a0);
+  background-image:-ms-linear-gradient(top, #1884d7, #1262a0);
+  background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#1884d7), to(#1262a0));
+  background-image:-webkit-linear-gradient(top, #1884d7, #1262a0);
+  background-image:-o-linear-gradient(top, #1884d7, #1262a0);
+  background-image:linear-gradient(top, #1884d7, #1262a0);
+}
+
+.btn-navbar:active,.btn-navbar.active{
+  background-color:#080808 \9;
+}
+
+.search-query {
+  width: 40%;
+}
+
+.accordion-group {
+  background-color: #F5F5F5;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 4px 4px 4px 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+  min-height: 20px;
+}
+
+.full-width {
+	width: 99%;
+}
+
+.result-head {
+	display:block;
+	padding:8px 15px;
+}
+
+#masking
+{
+	background: transparent url(images/line-dotted.png) left top repeat;
+	width:100%;
+	height:150%;
+	position:fixed;
+  top: -100px;
+	z-index: -99;
+	padding:0;
+	margin:0;
+}
+
+#adv-search-form table {
+	width: 650px;
+}

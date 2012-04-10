@@ -21,4 +21,12 @@
 ?>
 <div class="well">
 Nayanes is federated search engine for SLiMS. It fetch bibliographic records from <strong>SLiMS MODS XML</strong> web service.
+Developed using pure PHP 5 scripting language and PHP's XML libraries without any database connection.
+The interface are built using HTML5, CSS3 and also fabulous <a href="http://jquery.com" target="blank">jQuery</a>
+and <a href="http://twitter.github.com/bootstrap/index.html" target="blank">Twitter's Bootstrap</a> framework.
+<blockquote>
+<p>
+Original creator: <span class="badge badge-success">Arie Nugraha - dicarve@gmail.com</span> - <a href="http://dicarve.blogspot.com" target="blank">http://dicarve.blogspot.com</a>
+</p>
+</blockquote>
 </div>

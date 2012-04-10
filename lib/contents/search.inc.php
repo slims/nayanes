@@ -51,10 +51,10 @@ if ( !isset($_GET['keywords']) && !isset($_GET['advsearch']) ) {
           <a class="accordion-toggle" data-toggle="collapse" data-parent="#search-result" href="#collapse<?php echo $idx; ?>">
             <?php echo __('Search result for: ').'<strong>'.$node_data['desc'].'</strong>'; ?>
           </a>
+          <img class="loader" src="templates/result-loader.gif" />
         </div>
         <div id="collapse<?php echo $idx; ?>" class="accordion-body collapse<?php echo ($s < 2)?' in':''; ?>">
           <div class="accordion-inner" id="<?php echo $nodeHTMLID; ?>">
-          <img class="loader" src="templates/result-loader.gif" />
           </div>
         </div>
       </div>
@@ -77,10 +77,10 @@ if ( !isset($_GET['keywords']) && !isset($_GET['advsearch']) ) {
     <div class="accordion-group">
       <div class="accordion-heading">
         <span class="result-head"><?php echo __('Search result for: ').'<strong>'.$sysconf['node'][$nodeid]['desc'].'</strong>'; ?></span>
+        <img class="loader" src="templates/result-loader.gif" />
       </div>
       <div id="collapseOne" class="accordion-body collapse in">
         <div class="accordion-inner" id="nodeResult">
-        <img class="loader" src="templates/result-loader.gif" />
         </div>
       </div>
     </div>

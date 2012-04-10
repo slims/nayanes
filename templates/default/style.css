@@ -27,6 +27,10 @@
   min-height: 20px;
 }
 
+.accordion-toggle {
+	font-size: 120%;
+}
+
 .full-width {
 	width: 99%;
 }
@@ -34,6 +38,19 @@
 .result-head {
 	display:block;
 	padding:8px 15px;
+}
+
+.loader {
+	display: block;
+	margin: 0 auto;
+}
+
+.field-author {
+	font-style: italic;
+}
+
+.field-title {
+	width: 60%;
 }
 
 #masking

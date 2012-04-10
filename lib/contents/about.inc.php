@@ -18,3 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+?>
+<div class="well">
+Nayanes is federated search engine for SLiMS. It fetch bibliographic records from <strong>SLiMS MODS XML</strong> web service.
+</div>

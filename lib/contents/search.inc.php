@@ -27,6 +27,11 @@ if ( !isset($_GET['keywords']) && !isset($_GET['advsearch']) ) {
   }
   if (isset($_GET['advsearch'])) {
     $keywords = '';
+    if ($title = trim($_GET['title'])) { $keywords .= ' title='.$title; }
+    if ($author = trim($_GET['author'])) { $keywords .= ' author='.$author; }
+    if ($subject = trim($_GET['subject'])) { $keywords .= ' subject='.$subject; }
+    if ($isbn = trim($_GET['isbn'])) { $keywords .= ' isbn='.$isbn; }
+    $keywords = trim($keywords);
   }
 
   if (!$keywords) {
@@ -35,36 +40,59 @@ if ( !isset($_GET['keywords']) && !isset($_GET['advsearch']) ) {
     // show result
     echo '<div class="accordion" id="search-result">'."\n";
     if ($_GET['node'] == 'ALL') {
+      // MULTIPLE FEDERATED NODE SEARCH
       $s = 1;
       foreach ($sysconf['node'] as $idx => $node_data) {
+        $keywords = urlencode($keywords);
+        $nodeHTMLID = 'node'.$idx;
 ?>
       <div class="accordion-group">
-        <div class="accordion-heading">
-          <a class="accordion-toggle" data-toggle="collapse" data-parent="#search-result" href="#collapseOne">
+        <div class="accordion-heading" id="<?php echo $nodeHTMLID; ?>-info">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#search-result" href="#collapse<?php echo $idx; ?>">
             <?php echo __('Search result for: ').'<strong>'.$node_data['desc'].'</strong>'; ?>
           </a>
         </div>
-        <div id="collapseOne" class="accordion-body in" style="height: auto; ">
-          <div class="accordion-inner">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        <div id="collapse<?php echo $idx; ?>" class="accordion-body collapse<?php echo ($s < 2)?' in':''; ?>">
+          <div class="accordion-inner" id="<?php echo $nodeHTMLID; ?>">
+          <img class="loader" src="templates/result-loader.gif" />
           </div>
         </div>
       </div>
+      <script type="text/javascript">
+        jQuery( function() {
+          jQuery.ajax('index.php?p=search-node&nodeid=<?php echo $idx; ?>&keywords=<?php echo $keywords; ?>',
+          {type: 'GET'}).done(
+            function (ajaxData) {
+              $('#<?php echo $nodeHTMLID; ?>').html(ajaxData);
+            });
+        })
+      </script>
 <?php
       $s++;
       }
     } else {
+      // SINGLE NODE SEARCH
+      $nodeid = (integer)$_GET['node'];
 ?>
     <div class="accordion-group">
       <div class="accordion-heading">
-        <span class="result-head"><?php echo __('Search result for: ').'<strong>'.$sysconf['node'][$_GET['node']]['desc'].'</strong>'; ?></span>
+        <span class="result-head"><?php echo __('Search result for: ').'<strong>'.$sysconf['node'][$nodeid]['desc'].'</strong>'; ?></span>
       </div>
-      <div id="collapseOne" class="accordion-body in" style="height: auto; ">
-        <div class="accordion-inner">
-          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      <div id="collapseOne" class="accordion-body collapse in">
+        <div class="accordion-inner" id="nodeResult">
+        <img class="loader" src="templates/result-loader.gif" />
         </div>
       </div>
     </div>
+    <script type="text/javascript">
+      jQuery( function() {
+        jQuery.ajax('index.php?p=search-node&nodeid=<?php echo $nodeid; ?>&keywords=<?php echo $keywords; ?>',
+        {type: 'GET'}).done(
+          function (ajaxData) {
+            $('#nodeResult').html(ajaxData);
+          });
+      })
+    </script>
 <?php
     }
   }

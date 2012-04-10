@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <!--
+  Arie Nugraha 2012. dicarve@gmail.com
+  dicarve.blogspot.com
   this template taken and modified from Bootstrap starter template
   http://twitter.github.com/bootstrap/examples/starter-template.html -->
 <html lang="en">
@@ -41,11 +43,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Nayanes: SLiMS Search Proxy</a>
+          <a class="brand" href="index.php">Nayanes: SLiMS Search Proxy</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="index.php">Home</a></li>
               <li><a href="http://slims.web.id">SLiMS</a></li>
+              <li><a href="index.php?p=about">About Nayanes</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -70,13 +73,13 @@
     </form>
 
     <!-- advanced search -->
-    <div id="advSearchModal" class="modal hide">
+    <div id="advSearchModal" class="modal fade hide">
+    <form id="adv-search-form" action="index.php" method="get">
     <div class="modal-header">
       <a class="close" data-dismiss="modal">x</a>
       <h3>Nayanes: <?php echo __('Advanced search'); ?></h3>
     </div>
     <div class="modal-body">
-    <form id="adv-search-form" action="index.php" method="get">
     <input type="hidden" name="advsearch" value="1" />
     <input type="hidden" name="p" value="search" />
 		<table>
@@ -122,12 +125,12 @@
 				</td>
 			</tr>
 		</table>
-  	</form>
     </div>
     <div class="modal-footer">
       <input type="submit" name="search" value="<?php echo __('Search'); ?>" class="btn btn-primary btn-large" />
       <a class="btn btn-danger btn-large close" data-dismiss="modal">Close</a>
     </div>
+    </form>
     </div>
 
     <div id="main-content">

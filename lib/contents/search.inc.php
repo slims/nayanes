@@ -45,6 +45,9 @@ if ( !isset($_GET['keywords']) && !isset($_GET['advsearch']) ) {
       foreach ($sysconf['node'] as $idx => $node_data) {
         $keywords = urlencode($keywords);
         $nodeHTMLID = 'node'.$idx;
+        if (isset($sysconf['node'][$idx+1])) {
+          $nextNodeHTMLID = 'node'.($idx+1);
+        }
 ?>
       <div class="accordion-group">
         <div class="accordion-heading" id="<?php echo $nodeHTMLID; ?>-info">
@@ -59,28 +62,48 @@ if ( !isset($_GET['keywords']) && !isset($_GET['advsearch']) ) {
         </div>
       </div>
       <script type="text/javascript">
+      <?php if ($s < 2) { ?>
         jQuery( function() {
           jQuery.ajax('index.php?p=search-node&nodeid=<?php echo $idx; ?>&keywords=<?php echo $keywords; ?>',
           {type: 'GET'}).done(
             function (ajaxData) {
               $('#<?php echo $nodeHTMLID; ?>').html(ajaxData);
+              <?php if (isset($nextNodeHTMLID)) { ?>
+              $('#<?php echo $nextNodeHTMLID; ?>').trigger('<?php echo $nextNodeHTMLID; ?>');
+              <?php } ?>
             });
-        })
+        });
+      <?php } else { ?>
+        jQuery( function() {
+          jQuery('#<?php echo $nodeHTMLID; ?>').bind('<?php echo $nodeHTMLID; ?>', function() {
+            jQuery.ajax('index.php?p=search-node&nodeid=<?php echo $idx; ?>&keywords=<?php echo $keywords; ?>',
+            {type: 'GET'}).done(
+              function (ajaxData) {
+                $('#<?php echo $nodeHTMLID; ?>').html(ajaxData);
+                <?php if (isset($nextNodeHTMLID)) { ?>
+                $('#<?php echo $nextNodeHTMLID; ?>').trigger('<?php echo $nextNodeHTMLID; ?>');
+                <?php } ?>
+              });
+          });
+        });
+      <?php } ?>
       </script>
 <?php
+      unset($nextNodeHTMLID);
       $s++;
       }
     } else {
       // SINGLE NODE SEARCH
       $nodeid = (integer)$_GET['node'];
+      $nodeHTMLID = 'node'.$nodeid;
 ?>
     <div class="accordion-group">
-      <div class="accordion-heading">
+      <div class="accordion-heading" id="<?php echo $nodeHTMLID; ?>-info">
         <span class="result-head"><?php echo __('Search result for: ').'<strong>'.$sysconf['node'][$nodeid]['desc'].'</strong>'; ?></span>
         <img class="loader" src="templates/result-loader.gif" />
       </div>
-      <div id="collapseOne" class="accordion-body collapse in">
-        <div class="accordion-inner" id="nodeResult">
+      <div id="collapse<?php echo $nodeid; ?>" class="accordion-body collapse in">
+        <div class="accordion-inner" id="<?php echo $nodeHTMLID; ?>">
         </div>
       </div>
     </div>
@@ -89,7 +112,7 @@ if ( !isset($_GET['keywords']) && !isset($_GET['advsearch']) ) {
         jQuery.ajax('index.php?p=search-node&nodeid=<?php echo $nodeid; ?>&keywords=<?php echo $keywords; ?>',
         {type: 'GET'}).done(
           function (ajaxData) {
-            $('#nodeResult').html(ajaxData);
+            $('#<?php echo $nodeHTMLID; ?>').html(ajaxData);
           });
       })
     </script>

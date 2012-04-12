@@ -47,7 +47,7 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="index.php">Home</a></li>
-              <li><a href="http://slims.web.id">SLiMS</a></li>
+              <li><a href="http://slims.web.id" target="blank">SLiMS</a></li>
               <li><a href="index.php?p=about">About Nayanes</a></li>
             </ul>
           </div><!--/.nav-collapse -->

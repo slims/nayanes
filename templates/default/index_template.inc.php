@@ -38,12 +38,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="index.php">Nayanes: SLiMS Search Proxy</a>
+					<img src="templates/default/images/logo.png" class="navbar-text logo pull-left" /><a class="brand" href="index.php">Nayanes: SLiMS Search Proxy</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="index.php">Home</a></li>
@@ -137,6 +132,15 @@
     <?php echo $main_content; ?>
     </div>
 
+    <!-- footer -->
+    <div class="navbar navbar-fixed-bottom">
+      <div class="navbar-inner">
+        <div class="container">
+           <p class="navbar-text pull-left">Senayan Developer Community</p>
+        </div>
+      </div>
+    </div>
+		
     </div> <!-- /container -->
 
     <script src="templates/default/js/supersized.3.1.3.min.js"></script>

@@ -2,6 +2,15 @@
  Override bootstrap style
 */
 
+.navbar .logo {
+	margin: 3px;
+	margin-right: 10px;
+}
+
+.modal form {
+	margin-bottom: 0;
+}
+
 .navbar-inner {
   background-image:-moz-linear-gradient(top, #1884d7, #1262a0);
   background-image:-ms-linear-gradient(top, #1884d7, #1262a0);

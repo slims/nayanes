@@ -121,8 +121,10 @@ if ( !isset($_GET['keywords']) && !isset($_GET['nodeid']) ) {
       ?>
       <script type="text/javascript">
       jQuery(function() {
-        $('#node<?php echo $nodeid; ?>-info .loader, #node<?php echo $nodeid; ?>-info .alert').remove();
-        $('#node<?php echo $nodeid; ?>-info').append('<?php echo '<div class="alert alert-error">'.sprintf(__('Sorry, no result found from <strong>%s</strong> OR maybe XML result and detail disabled.'), $sysconf['node'][$nodeid]['desc']).'</div>' ?>');
+        // $('#node<?php echo $nodeid; ?>-info .loader, #node<?php echo $nodeid; ?>-info .alert').remove();
+        // $('#node<?php echo $nodeid; ?>-info').append('<?php echo '<div class="alert alert-error">'.sprintf(__('Sorry, no result found from <strong>%s</strong> OR maybe XML result and detail disabled.'), $sysconf['node'][$nodeid]['desc']).'</div>' ?>');
+        $('.no-result-list').append('<li>No result found from <strong><?php echo $sysconf['node'][$nodeid]['desc']; ?></strong></li>')
+        $('#node<?php echo $nodeid; ?>').parents('.accordion-group').remove();
       });
       </script>
       <?php

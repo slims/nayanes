@@ -66,6 +66,7 @@ define('LIB_DIR', NAYANES_BASE_DIR.'lib'.DIRECTORY_SEPARATOR);
 require LIB_DIR.'lang/localisation.php';
 
 // SEARCH NODE
+// Array index/Node Index number MUST BE IN SEQUENTIAL ORDER start from 1
 $sysconf['node'][1] = array('url' => 'http://perpustakaan.kemdikbud.go.id/libsenayan', 'desc' => 'Perpustakaan Kementerian Pendidikan dan Kebudayaan');
 $sysconf['node'][2] = array('url' => 'http://istinfonet.katalog-induk.net', 'desc' => 'Pusat Perpustakaan Islam Indonesia');
 $sysconf['node'][3] = array('url' => 'http://perpustakaan.bapeten.go.id', 'desc' => 'Perpustakaan BAPETEN');
@@ -74,6 +75,8 @@ $sysconf['node'][4] = array('url' => 'http://perpustakaan.kpk.go.id/', 'desc' =>
 $sysconf['node'][5] = array('url' => 'http://ucs.jogjalib.net', 'desc' => 'Union Catalog Yogyakarta Jogjalib.net');
 $sysconf['node'][6] = array('url' => 'http://primurlib.net', 'desc' => 'Union Catalog Priyangan Timur Primurlib.net');
 $sysconf['node'][7] = array('url' => 'http://makassarlib.net', 'desc' => 'Union Catalog Makassar Makassarlib.net');
+
+$sysconf['request_timeout'] = 5000; // in miliseconds
 
 // theme to use
 $sysconf['theme'] = 'default';

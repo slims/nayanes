@@ -37,11 +37,15 @@ if ( !isset($_GET['keywords']) && !isset($_GET['advsearch']) ) {
   if (!$keywords) {
     echo '<div class="alert alert-error">'.__('No query supplied. Please insert one or more keywords to search').'</div>';
   } else {
+    ?>
+    <div class="no-result-info alert alert-error"><ul class="no-result-list"></ul></div>
+    <?php
     // show result
     echo '<div class="accordion" id="search-result">'."\n";
     if ($_GET['node'] == 'ALL') {
       // MULTIPLE FEDERATED NODE SEARCH
       $s = 1;
+      $js_ajaxes = '';
       foreach ($sysconf['node'] as $idx => $node_data) {
         $keywords = urlencode($keywords);
         $nodeHTMLID = 'node'.$idx;
@@ -51,47 +55,97 @@ if ( !isset($_GET['keywords']) && !isset($_GET['advsearch']) ) {
 ?>
       <div class="accordion-group">
         <div class="accordion-heading" id="<?php echo $nodeHTMLID; ?>-info">
-          <a class="accordion-toggle" data-toggle="collapse" data-parent="#search-result" href="#collapse<?php echo $idx; ?>">
-            <?php echo __('Search result for: ').'<strong>'.$node_data['desc'].'</strong>'; ?>
-          </a>
-          <img class="loader" src="templates/result-loader.gif" />
+          <h3 class="node-name"><?php echo $node_data['desc']; ?>
+          <span class="pull-right"><a class="accordion-toggle btn btn-small btn-warning" data-toggle="collapse" data-parent="#search-result" href="#collapse<?php echo $idx; ?>"><i class="icon-list"></i> <?php echo __('Show search result') ?></a></span>
+          </h3>
+          <img class="loader" src="./templates/result-loader.gif" />
         </div>
         <div id="collapse<?php echo $idx; ?>" class="accordion-body collapse<?php echo ($s < 2)?' in':''; ?>">
           <div class="accordion-inner" id="<?php echo $nodeHTMLID; ?>">
           </div>
         </div>
       </div>
-      <script type="text/javascript">
-      <?php if ($s < 2) { ?>
-        jQuery( function() {
+      <?php
+      ob_start();
+      if ($s < 2) {
+      ?>
+
+        var to<?php echo $nodeHTMLID; ?> = null;
+        jQuery.ajax('index.php?p=search-node&nodeid=<?php echo $idx; ?>&keywords=<?php echo $keywords; ?>',
+          {type: 'GET',
+            beforeSend: function(xhr) {
+              to<?php echo $nodeHTMLID; ?> = setTimeout( function() {
+                $('.no-result-list').append('<li>REQUEST TIMEOUT from <strong><?php echo $node_data['desc']; ?></strong></li>')
+                $('#<?php echo $nodeHTMLID; ?>').parents('.accordion-group').find('.loader').css('display', 'block').show();
+                // $('#<?php echo $nodeHTMLID; ?>-info .loader').remove();
+                // $('#<?php echo $nodeHTMLID; ?>-info').append('<div class="alert alert-error">REQUEST TIMEOUT</div>');
+                xhr.abort();
+                <?php if (isset($nextNodeHTMLID)) : ?>
+                $('#<?php echo $nextNodeHTMLID; ?>').trigger('<?php echo $nextNodeHTMLID; ?>');
+                <?php else : ?>
+                if ($('.no-result-info .no-result-list li').length > 0) { $('.no-result-info').slideDown(); }
+                <?php endif; ?>
+                $('#<?php echo $nodeHTMLID; ?>').parents('.accordion-group').remove();
+                },
+                <?php echo $sysconf['request_timeout']; ?>);
+              }
+          }).done(
+          function (ajaxData) {
+            clearTimeout(to<?php echo $nodeHTMLID; ?>);
+            $('#<?php echo $nodeHTMLID; ?>').html(ajaxData);
+            <?php if (isset($nextNodeHTMLID)) : ?>
+            $('#<?php echo $nextNodeHTMLID; ?>').trigger('<?php echo $nextNodeHTMLID; ?>');
+            <?php else : ?>
+            if ($('.no-result-info .no-result-list li').length > 0) { $('.no-result-info').slideDown(); }
+            <?php endif; ?>
+          });
+
+      <?php } else { ?>
+        var to<?php echo $nodeHTMLID; ?> = null;
+        jQuery('#<?php echo $nodeHTMLID; ?>').bind('<?php echo $nodeHTMLID; ?>', function() {
           jQuery.ajax('index.php?p=search-node&nodeid=<?php echo $idx; ?>&keywords=<?php echo $keywords; ?>',
-          {type: 'GET'}).done(
+          {type: 'GET',
+            beforeSend: function(xhr) {
+              $('#<?php echo $nodeHTMLID; ?>').parents('.accordion-group').find('.loader').css('display', 'block').show();
+              to<?php echo $nodeHTMLID; ?> = setTimeout( function() {
+                $('.no-result-list').append('<li>REQUEST TIMEOUT from <strong><?php echo $node_data['desc']; ?></strong></li>')
+                // $('#<?php echo $nodeHTMLID; ?>-info .loader').remove();
+                // $('#<?php echo $nodeHTMLID; ?>-info').append('<div class="alert alert-error">REQUEST TIMEOUT</div>');
+                xhr.abort();
+                <?php if (isset($nextNodeHTMLID)) : ?>
+                $('#<?php echo $nextNodeHTMLID; ?>').trigger('<?php echo $nextNodeHTMLID; ?>');
+                <?php else : ?>
+                if ($('.no-result-info .no-result-list li').length > 0) { $('.no-result-info').slideDown(); }
+                <?php endif; ?>
+                $('#<?php echo $nodeHTMLID; ?>').parents('.accordion-group').remove();
+                },
+                <?php echo $sysconf['request_timeout']; ?>);
+              }
+            }).done(
             function (ajaxData) {
+              clearTimeout(to<?php echo $nodeHTMLID; ?>);
               $('#<?php echo $nodeHTMLID; ?>').html(ajaxData);
-              <?php if (isset($nextNodeHTMLID)) { ?>
+              <?php if (isset($nextNodeHTMLID)) : ?>
               $('#<?php echo $nextNodeHTMLID; ?>').trigger('<?php echo $nextNodeHTMLID; ?>');
-              <?php } ?>
+              <?php else : ?>
+              if ($('.no-result-info .no-result-list li').length > 0) { $('.no-result-info').slideDown(); }
+              <?php endif; ?>
             });
         });
-      <?php } else { ?>
-        jQuery( function() {
-          jQuery('#<?php echo $nodeHTMLID; ?>').bind('<?php echo $nodeHTMLID; ?>', function() {
-            jQuery.ajax('index.php?p=search-node&nodeid=<?php echo $idx; ?>&keywords=<?php echo $keywords; ?>',
-            {type: 'GET'}).done(
-              function (ajaxData) {
-                $('#<?php echo $nodeHTMLID; ?>').html(ajaxData);
-                <?php if (isset($nextNodeHTMLID)) { ?>
-                $('#<?php echo $nextNodeHTMLID; ?>').trigger('<?php echo $nextNodeHTMLID; ?>');
-                <?php } ?>
-              });
-          });
-        });
-      <?php } ?>
-      </script>
+      <?php }
+      $js_ajaxes .= ob_get_clean();
+      ?>
 <?php
       unset($nextNodeHTMLID);
       $s++;
       }
+?>
+     <script type="text/javascript">
+     jQuery(document).ready( function() {
+     <?php echo $js_ajaxes; ?>
+     });
+     </script>
+<?php
     } else {
       // SINGLE NODE SEARCH
       $nodeid = (integer)$_GET['node'];
@@ -109,10 +163,30 @@ if ( !isset($_GET['keywords']) && !isset($_GET['advsearch']) ) {
     </div>
     <script type="text/javascript">
       jQuery( function() {
+        var to<?php echo $nodeHTMLID; ?> = null;
         jQuery.ajax('index.php?p=search-node&nodeid=<?php echo $nodeid; ?>&keywords=<?php echo $keywords; ?>',
-        {type: 'GET'}).done(
+        {type: 'GET',
+            beforeSend: function(xhr) {
+              $('#<?php echo $nodeHTMLID; ?>').parents('.accordion-group').find('.loader').css('display', 'block').show();
+              to<?php echo $nodeHTMLID; ?> = setTimeout( function() {
+                $('.no-result-list').append('<li>REQUEST TIMEOUT from <strong><?php echo $node_data['desc']; ?></strong></li>')
+                // $('#<?php echo $nodeHTMLID; ?>-info .loader').remove();
+                // $('#<?php echo $nodeHTMLID; ?>-info').append('<div class="alert alert-error">REQUEST TIMEOUT</div>');
+                xhr.abort();
+                <?php if (isset($nextNodeHTMLID)) : ?>
+                $('#<?php echo $nextNodeHTMLID; ?>').trigger('<?php echo $nextNodeHTMLID; ?>');
+                <?php else : ?>
+                if ($('.no-result-info .no-result-list li').length > 0) { $('.no-result-info').slideDown(); }
+                <?php endif; ?>
+                $('#<?php echo $nodeHTMLID; ?>').parents('.accordion-group').remove();
+                },
+                <?php echo $sysconf['request_timeout']; ?>);
+              }
+          }).done(
           function (ajaxData) {
+            clearTimeout(to<?php echo $nodeHTMLID; ?>);
             $('#<?php echo $nodeHTMLID; ?>').html(ajaxData);
+            if ($('.no-result-info .no-result-list li').length > 0) { $('.no-result-info').slideDown(); }
           });
       })
     </script>

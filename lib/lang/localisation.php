@@ -45,11 +45,17 @@ if (!defined('INDEX_AUTH')) {
 
 // set php-gettext library
 require LIB_DIR.'lang/php-gettext'.DSEP.'gettext.inc';
-
+if (!isset($sysconf['default_lang'])) {
+	$sysconf['default_lang'] = 'en_US';
+}
 // gettext setup
 $locale = $sysconf['default_lang'];
 $domain = 'messages';
 $encoding = 'UTF-8';
+
+if (!defined ('LANGUAGES_BASE_DIR')) {
+	define('LANGUAGES_BASE_DIR', LIB_DIR.'lang'.DIRECTORY_SEPARATOR);
+}
 
 // set language to use
 T_setlocale(LC_ALL, $locale);

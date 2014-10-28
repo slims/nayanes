@@ -75,6 +75,7 @@ $sysconf['node'][4] = array('url' => 'http://perpustakaan.kpk.go.id/', 'desc' =>
 $sysconf['node'][5] = array('url' => 'http://ucs.jogjalib.net', 'desc' => 'Union Catalog Yogyakarta Jogjalib.net');
 $sysconf['node'][6] = array('url' => 'http://primurlib.net', 'desc' => 'Union Catalog Priyangan Timur Primurlib.net');
 $sysconf['node'][7] = array('url' => 'http://makassarlib.net', 'desc' => 'Union Catalog Makassar Makassarlib.net');
+$sysconf['node'][8] = array('url' => 'http://jatenglib.net', 'desc' => 'Union Catalog Jawa Tengah');
 
 $sysconf['request_timeout'] = 5000; // in miliseconds
 

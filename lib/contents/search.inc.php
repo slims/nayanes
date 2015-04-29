@@ -169,7 +169,7 @@ if ( !isset($_GET['keywords']) && !isset($_GET['advsearch']) ) {
             beforeSend: function(xhr) {
               $('#<?php echo $nodeHTMLID; ?>').parents('.accordion-group').find('.loader').css('display', 'block').show();
               to<?php echo $nodeHTMLID; ?> = setTimeout( function() {
-                $('.no-result-list').append('<li>REQUEST TIMEOUT from <strong><?php echo $node_data['desc']; ?></strong></li>')
+                $('.no-result-list').append('<li>REQUEST TIMEOUT from <strong><?php echo $sysconf['node'][$nodeid]['desc']; ?></strong></li>')
                 // $('#<?php echo $nodeHTMLID; ?>-info .loader').remove();
                 // $('#<?php echo $nodeHTMLID; ?>-info').append('<div class="alert alert-error">REQUEST TIMEOUT</div>');
                 xhr.abort();

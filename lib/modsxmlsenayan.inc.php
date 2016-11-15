@@ -61,7 +61,7 @@ function modsXMLsenayan($str_modsxml, $str_xml_type = 'string')
     // get result information from SLiMS Namespaced node
     $_slims = $xml->children('http://senayan.diknas.go.id');
     if (!$_slims) { $_slims = $xml->children('http://slims.web.id'); }
-    
+
     if ($_slims) {
       if (isset($_slims->resultInfo)) {
         $_records['result_num'] = (integer)$_slims->resultInfo->modsResultNum;
@@ -84,6 +84,9 @@ function modsXMLsenayan($str_modsxml, $str_xml_type = 'string')
       $data = array();
 
       $data['id'] = (string)$record['ID'];
+      if (empty($data['id'])) {
+        $data['id'] = $record['id'];
+      }
       # authors
       $data['authors'] = array();
 

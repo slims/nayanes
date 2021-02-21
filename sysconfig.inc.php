@@ -31,6 +31,8 @@ if (!defined('INDEX_AUTH')) {
 @ini_set('magic_quotes_runtime', false);
 @ini_set('magic_quotes_sybase', false);
 // force disabling magic quotes
+
+/** disable deprecated function
 if (get_magic_quotes_gpc()) {
   function stripslashes_deep($value)
   {
@@ -43,6 +45,8 @@ if (get_magic_quotes_gpc()) {
   $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
   $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
 }
+*/
+
 // turn off all error messages for security reason
 @ini_set('display_errors',true);
 
